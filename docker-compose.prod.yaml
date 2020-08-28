@@ -38,7 +38,7 @@ services:
     container_name: test-nestjs-api-rest-redis
 
   keycloak:
-    image: gcr.io/fullcycle-exemplos/keycloak:latest
+    image: wesleywillians/keycloak:latest
     command: -Dkeycloak.profile.feature.upload_scripts=enabled
     environment:
       - KEYCLOAK_USER=admin
