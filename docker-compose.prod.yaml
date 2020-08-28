@@ -33,7 +33,6 @@ services:
     ports:
       - 9200:9200
     
-
   redis:
     image: redis:alpine
     container_name: test-nestjs-api-rest-redis
