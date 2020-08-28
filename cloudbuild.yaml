@@ -5,8 +5,8 @@ steps:
 
     - id: "wait for it"
       name: 'docker'
-      args: ['exec', '-it','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api', '-timeout', '50s']      
+      args: ['exec','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api', '-timeout', '50s']      
     
     - id: "running tests"
-      name: 'docker/compose'
-      args: ['exec','-t', 'app', 'npm', 'run', 'test']
+      name: 'docker'
+      args: ['exec', 'micro-api-app', 'npm', 'run', 'test']
