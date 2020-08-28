@@ -7,12 +7,12 @@ steps:
     #   name: 'docker'
     #   args: ['logs','-f','--tail','100','micro-api-app']      
 
-    # - name: jwilder/dockerize:0.6.1
-    #   args: ['dockerize', '-timeout=120s', '-wait=http://micro-api-app:3000/api']
+    - name: jwilder/dockerize:0.6.1
+      args: ['dockerize', '-timeout=120s', '-wait=http://localhost:3000/api']
 
-    - id: "wait for it"
-      name: 'docker'
-      args: ['exec','micro-api-app', 'dockerize', '-timeout=200s','-wait=http://localhost:3000/api']      
+    # - id: "wait for it"
+    #   name: 'docker'
+    #   args: ['exec','micro-api-app', 'dockerize', '-timeout=200s','-wait=http://localhost:3000/api']      
     
     - id: "running tests"
       name: 'docker'
