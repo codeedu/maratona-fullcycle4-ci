@@ -4,8 +4,8 @@ steps:
       args: ['-f', 'docker-compose.prod.yaml', 'up', '-d']
 
     - id: "wait for it"
-      name: 'docker/compose'
-      args: ['exec', '-t','app', 'dockerize', '-wait', 'http://localhost:3000/api', '-timeout', '50s']      
+      name: 'docker'
+      args: ['exec', '-it','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api', '-timeout', '50s']      
     
     - id: "running tests"
       name: 'docker/compose'
