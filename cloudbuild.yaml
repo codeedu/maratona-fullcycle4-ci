@@ -5,11 +5,11 @@ steps:
 
     # - id: "tail"
     #   name: 'docker'
-    #   args: ['logs','-f','--tail','micro-api-app']      
+    #   args: ['logs','-f','--tail','100','micro-api-app']      
 
     - id: "wait for it"
       name: 'docker'
-      args: ['exec','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api','-interval','5s','-timeout','200s']      
+      args: ['exec','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api','-wait-retry-interval','5s','-timeout','200s']      
     
     - id: "running tests"
       name: 'docker'
