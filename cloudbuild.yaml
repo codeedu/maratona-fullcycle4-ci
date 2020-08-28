@@ -3,14 +3,14 @@ steps:
       name: 'docker/compose'
       args: ['-f', 'docker-compose.prod.yaml', 'up', '-d']
 
-    - id: "tail"
-      name: 'docker'
-      args: ['logs','-f','--tail','micro-api-app']      
+    # - id: "tail"
+    #   name: 'docker'
+    #   args: ['logs','-f','--tail','micro-api-app']      
 
-    # - id: "wait for it"
-    #   name: 'docker'
-    #   args: ['exec','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api', '-timeout', '200s']      
+    - id: "wait for it"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api','-interval','5s','-timeout','200s']      
     
-    # - id: "running tests"
-    #   name: 'docker'
-    #   args: ['exec','micro-api-app', 'npm', 'run', 'test']
+    - id: "running tests"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'npm', 'run', 'test']
