@@ -5,7 +5,7 @@ steps:
 
     - id: "wait for it"
       name: 'docker'
-      args: ['exec','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api', '-timeout', '120s']      
+      args: ['exec','micro-api-app', 'dockerize', '-wait', 'http://localhost:3000/api', '-timeout', '200s']      
     
     - id: "running tests"
       name: 'docker'
