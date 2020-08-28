@@ -1,7 +1,7 @@
 steps:
     - id: "Docker compose"
       name: 'docker/compose'
-      args: ['-f', 'docker-compose.prod.yaml', 'up']
+      args: ['-f', 'docker-compose.prod.yaml', 'up','-d']
 
     # - id: "tail"
     #   name: 'docker'
@@ -10,10 +10,10 @@ steps:
     # - name: jwilder/dockerize:0.6.1
     #   args: ['dockerize', '-timeout=120s', '-wait=http://172.17.0.1:3000/api']
 
-    # - id: "wait for it"
-    #   name: 'docker'
-    #   args: ['exec','micro-api-app', 'dockerize', '-timeout=200s','-wait=http://localhost:3000/api']      
+    - id: "wait for it"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'dockerize', '-timeout=200s','-wait=http://localhost:3000/api']      
     
-    # - id: "running tests"
-    #   name: 'docker'
-    #   args: ['exec','micro-api-app', 'npm', 'run', 'test']
+    - id: "running tests"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'npm', 'run', 'test']
