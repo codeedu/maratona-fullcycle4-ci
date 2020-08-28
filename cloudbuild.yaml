@@ -4,9 +4,9 @@ steps:
       args: ['-f', 'docker-compose.prod.yaml', 'up', '-d']
 
     - id: "wait for it"
-      name: 'gcr.io/cloud-builders/docker'
-      args: ['exec', '-t', 'app', 'dockerize', '-wait', 'http://localhost:3000', '-timeout', '50s']      
+      name: 'docker/compose'
+      args: ['exec', 'app', 'dockerize', '-wait', 'http://localhost:3000', '-timeout', '50s']      
     
     - id: "running tests"
-      name: 'gcr.io/cloud-builders/docker'
-      args: ['exec', '-t', 'app', 'npm', 'run', 'test']
+      name: 'docker/compose'
+      args: ['exec', 'app', 'npm', 'run', 'test']
