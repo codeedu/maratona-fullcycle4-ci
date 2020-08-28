@@ -9,4 +9,4 @@ steps:
     
     - id: "running tests"
       name: 'docker/compose'
-      args: ['exec', 'app', 'npm', 'run', 'test']
+      args: ['exec','-t', 'app', 'npm', 'run', 'test']
