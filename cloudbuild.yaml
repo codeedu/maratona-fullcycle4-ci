@@ -1,6 +1,6 @@
 steps:
     - id: "Docker compose"
-      name: 'gcr.io/cloud-builders-community/docker-compose'
+      name: 'docker/compose'
       args: ['-f', 'docker-compose.prod.yaml', 'up', '-d']
 
     - id: "wait for it"
