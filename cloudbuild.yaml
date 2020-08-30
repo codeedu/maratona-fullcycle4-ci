@@ -1,0 +1,12 @@
+steps:
+    - id: "Docker compose"
+      name: 'docker/compose'
+      args: ['-f', 'docker-compose.prod.yaml', 'up','-d']
+
+    - id: "wait for it"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'dockerize', '-timeout=200s','-wait=http://localhost:3000/api']      
+    
+    - id: "running tests"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'npm', 'run', 'test']

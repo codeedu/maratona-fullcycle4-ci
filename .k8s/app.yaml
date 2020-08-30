@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Secret 
+metadata:
+    name: nest-secret
+type: Opaque
+data:
+    SESSION_SECRET_KEY: ZnVsbGN5Y2xlLmNvbS5icg==
+    KEYCLOAK_JSON: eyJyZWFsbSI6ImRpc2NvcmQiLCJhdXRoLXNlcnZlci11cmwiOiJodHRwOi8vMzUuMTkzLjc0Ljk6ODA4MC9hdXRoIiwic3NsLXJlcXVpcmVkIjoiZXh0ZXJuYWwiLCJyZXNvdXJjZSI6Im5lc3QiLCJ2ZXJpZnktdG9rZW4tYXVkaWVuY2UiOnRydWUsImNyZWRlbnRpYWxzIjp7InNlY3JldCI6IjY5YzgzYTAyLTYxODQtNGY1MS1iYTVjLWUyN2RhNGI1YWQwYiJ9LCJ1c2UtcmVzb3VyY2Utcm9sZS1tYXBwaW5ncyI6dHJ1ZSwiY29uZmlkZW50aWFsLXBvcnQiOjAsInBvbGljeS1lbmZvcmNlciI6e319
+
+--- 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: nest
+spec:
+    replicas: 4
+    selector:
+        matchLabels:
+            app: nest
+    template:
+        metadata:
+            labels:
+                app: nest
+        spec:
+            containers:
+                - name: nest
+                  image: wesleywillians/maratona4-nest:latest
+                  ports:
+                    - containerPort: 3000
+                  env:
+                  - name: APP_ENV
+                    value: prod
+                    
+                  - name: APP_URL
+                    value: http://localhost:3000                    
+
+                  - name: ELASTIC_SEARCH_HOST
+                    value: http://elasticsearch-elasticsearch-coordinating-only.default.svc.cluster.local:9200
+
+                  - name: ELASTIC_SEARCH_REQUEST_TIMEOUT
+                    value: "30000"
+
+                  - name: ELASTIC_SEARCH_PING_TIMEOUT
+                    value: "3000"                
+
+                  - name: REDIS_URI
+                    value: "redis://redis-master:6379/2"                
+                
+                  - name: SESSION_SECRET_KEY
+                    valueFrom:
+                        secretKeyRef:
+                            name: nest-secret
+                            key: SESSION_SECRET_KEY  
+
+                  - name: KEYCLOAK_JSON
+                    valueFrom:
+                        secretKeyRef:
+                            name: nest-secret
+                            key: KEYCLOAK_JSON                              
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: nest-service
+spec:
+    ports:
+        - port: 3000
+    selector:
+        app: nest
+    type: LoadBalancer
+  
