@@ -1,0 +1,38 @@
+steps:
+    - id: "Docker compose"
+      name: 'docker/compose'
+      args: ['-f', 'docker-compose.prod.yaml', 'up','-d']
+
+    - id: "wait for it"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'dockerize', '-timeout=200s','-wait=http://localhost:3000/api']      
+    
+    - id: "running tests"
+      name: 'docker'
+      args: ['exec','micro-api-app', 'npm', 'run', 'test']
+
+    - id: "renaming image"
+      name: "docker"
+      args: ["image","tag","micro-api-app","gcr.io/$PROJECT_ID/codeslack:$SHORT_SHA"]
+
+    - id: "renaming image - latest"
+      name: "docker"
+      args: ["image","tag","micro-api-app","gcr.io/$PROJECT_ID/codeslack:latest"]
+      
+    - name: 'docker'
+      args: ['push', 'gcr.io/$PROJECT_ID/codeslack:$SHORT_SHA']
+
+    - name: 'docker'
+      args: ['push', 'gcr.io/$PROJECT_ID/codeslack:latest']
+  
+    - name: 'gcr.io/cloud-builders/kubectl'
+      args: [
+      'set', 
+      'image', 
+      'deployment', 
+      'nest', 
+      'nest=gcr.io/$PROJECT_ID/codeslack:$SHORT_SHA'
+      ]
+      env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=codeslack'
