@@ -3,33 +3,25 @@ steps:
       name: 'docker/compose'
       args: ['-f', 'docker-compose.prod.yaml', 'up','-d']
 
-    - id: "images2"
-      name: "docker"
-      args: ["images"]
-
     - id: "wait for it"
       name: 'docker'
       args: ['exec','micro-api-app', 'dockerize', '-timeout=200s','-wait=http://localhost:3000/api']      
-    
-    - id: "images"
-      name: "docker"
-      args: ["images"]
 
     - id: "running tests"
       name: 'docker'
       args: ['exec','micro-api-app', 'npm', 'run', 'test']
 
+    - id: "commiting image"
+      name: "docker"
+      args: ["commit","micro-api-app","app"]
+
     - id: "renaming image"
       name: "docker"
-      args: ["image","tag","micro-api-app","gcr.io/$PROJECT_ID/codeslack:$SHORT_SHA"]
-
-    - id: "Renaming image"  
-      name: 'gcr.io/cloud-builders/docker'
-      args: ['image','tag','newapp','gcr.io/$PROJECT_ID/forumcode:$SHORT_SHA']      
+      args: ["image","tag","app","gcr.io/$PROJECT_ID/codeslack:$SHORT_SHA"]
 
     - id: "renaming image - latest"
       name: "docker"
-      args: ["image","tag","micro-api-app","gcr.io/$PROJECT_ID/codeslack:latest"]
+      args: ["image","tag","app","gcr.io/$PROJECT_ID/codeslack:latest"]
       
     - name: 'docker'
       args: ['push', 'gcr.io/$PROJECT_ID/codeslack:$SHORT_SHA']
